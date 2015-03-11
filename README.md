@@ -1,4 +1,4 @@
-# FxOSU Midterm Requirements Demo - FxOSUPrototypeService
+# FxOSU Final Requirements Demo - FxOSUPrototypeService
 
 # Overview
 
@@ -48,13 +48,13 @@ And I have modified these files:
 * dom/[moz.build](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/moz.build#L55) (Line 55)
 
 ## Requirements
-### Week 6 (February 9th to 13th)
-1. Analyze existing efforts (ie ServiceWorkers, RequestSync) to determine if they can be integrated with our system
-2. The prototype API should be written in JavaScript
-3. The prototype API should be callable by JavaScript executing in a web sandbox.
-4. The prototype API should be developer configurable, to provide a level of certainty about network quality
-5. The prototype API should be able to access data on the charging state of the device in order to determine if a task should be executed.
-6. The prototype API should be able to access data on the battery level of the device in order to determine if a task should be executed.
-7. The prototype API should be able to see if the device has an internet connection to determine if a task should be executed.
-8. The prototype API should be able to access latency-related network information to determine if a task should be executed.
-9. The prototype API should be able to function without error on Firefox for Desktop.
+### Week 10 (March 9th to 13th)
+1. :heavy_check_mark: The API should be written in C++ or JavaScript.
+2. The API should integrate with existing efforts wherever possible.
+3. :heavy_check_mark: The API should be developer configurable, to provide a level of certainty about network quality
+4. The API should passively collect network status information.
+5. The API should take into account the type of network connection, whether it be wifi, cellular data, etc
+6. The API should be able to access data about system load on the device in order to determine if the device can handle another task.
+7. :heavy_check_mark: The API should be able to access data on the battery level of the device in order to determine if a task should be executed.
+8. The API should be able to access data about recent tx/rx data
+9. :heavy_check_mark: The API should be able to access latency-related network information to determine if a task should be executed.
