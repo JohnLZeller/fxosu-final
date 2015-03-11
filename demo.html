@@ -1,0 +1,46 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Midterm Requirements Demo</h1>
+	<table>
+		<tr>
+			<th style="text-align: left; vertical-align: text-top;">Battery Level: </th>
+			<td style="margin: 5px;" id="batlevel"></td>
+		</tr>
+		<tr>
+			<th style="text-align: left; vertical-align: text-top;">Battery Charging: </th>
+			<td style="margin: 5px;" id="batcharge"></td>
+		</tr>
+		<tr>
+			<th style="text-align: left; vertical-align: text-top;">Connected to Internet: </th>
+			<td style="margin: 5px;" id="connected"></td>
+		</tr>
+		<tr>
+			<th style="text-align: left; vertical-align: text-top;">High Certainty: </th>
+			<td style="margin: 5px;" id="high"></td>
+		</tr>
+		<tr>
+			<th style="text-align: left; vertical-align: text-top;">Moderate Certainty: </th>
+			<td style="margin: 5px;" id="mod"></td>
+		</tr>
+		<tr>
+			<th style="text-align: left; vertical-align: text-top;">Low Certainty: </th>
+			<td style="margin: 5px;" id="low"></td>
+		</tr>
+	</table>
+
+	<script>
+		var fxosu = navigator.mozFxOSUPrototypeService;
+		document.getElementById('batlevel').innerHTML = fxosu.batteryLevel() * 100 + "%";
+		document.getElementById('batcharge').innerHTML = (fxosu.batteryCharging() == 'true' ? 'Yes' : 'No');
+		if (fxosu.batteryLevel() == 1) {
+			document.getElementById('batcharge').innerHTML += " (battery is 100%, so might be charging)";
+		}
+		document.getElementById('connected').innerHTML = (fxosu.connectionUp() == 'true' ? 'Yes' : 'No');
+		document.getElementById('high').innerHTML = fxosu.mozIsNowGood(1);
+		document.getElementById('mod').innerHTML = fxosu.mozIsNowGood(2);
+		document.getElementById('low').innerHTML = fxosu.mozIsNowGood(3);
+	</script>
+</body>
+</html>
