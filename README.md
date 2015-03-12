@@ -1,8 +1,8 @@
-# FxOSU Final Requirements Demo - FxOSUPrototypeService
+# FxOSU Final Requirements Demo - FxOSUService
 
 # Overview
 
-I used [PhoneNumberService.js](http://mxr.mozilla.org/mozilla-central/source/dom/phonenumberutils/PhoneNumberService.js) and [PhoneNumberService.manifest](http://mxr.mozilla.org/mozilla-central/source/dom/phonenumberutils/PhoneNumberService.manifest) as a base. I then rewrote all of the PhoneNumberService stuff into my own name, FxOSUPrototypeService.
+I used [PhoneNumberService.js](http://mxr.mozilla.org/mozilla-central/source/dom/phonenumberutils/PhoneNumberService.js) and [PhoneNumberService.manifest](http://mxr.mozilla.org/mozilla-central/source/dom/phonenumberutils/PhoneNumberService.manifest) as a base. I then rewrote all of the PhoneNumberService stuff into my own name, FxOSUService.
 
 Here is the [diff of mozilla-central with my changes](https://github.com/JohnLZeller/fxosu-midterm/blob/master/prototype.diff) to [mozilla-central](http://hg.mozilla.org/mozilla-central/).
 
@@ -18,26 +18,26 @@ Pull down this repo, then cd into the mozilla-central (m-c) repo that you've alr
 Once it is done building Firefox Desktop, you can launch it and proceed to the next step.
 
 # How to Use
-Once you've built and launched your new Firefox, you can open the console and get access to the API via navigator.mozFxOSUPrototypeService and the following commands are available:
-* navigator.mozFxOSUPrototypeService.batteryLevel();
-* navigator.mozFxOSUPrototypeService.batteryCharging();
-* navigator.mozFxOSUPrototypeService.recentRxTx();
-* navigator.mozFxOSUPrototypeService.latencyInfo();
-* navigator.mozFxOSUPrototypeService.showLatencyInfo(); # Use this to grab data
-* navigator.mozFxOSUPrototypeService.connectionType();
-* navigator.mozFxOSUPrototypeService.connectionUp();
-* navigator.mozFxOSUPrototypeService.connectionQuality();
-* navigator.mozFxOSUPrototypeService.mozIsNowGood();
+Once you've built and launched your new Firefox, you can open the console and get access to the API via navigator.mozFxOSUService and the following commands are available:
+* navigator.mozFxOSUService.batteryLevel();
+* navigator.mozFxOSUService.batteryCharging();
+* navigator.mozFxOSUService.recentRxTx();
+* navigator.mozFxOSUService.latencyInfo();
+* navigator.mozFxOSUService.showLatencyInfo(); # Use this to grab data
+* navigator.mozFxOSUService.connectionType();
+* navigator.mozFxOSUService.connectionUp();
+* navigator.mozFxOSUService.connectionQuality();
+* navigator.mozFxOSUService.mozIsNowGood();
 
 Additionally, there is a simple demo html page [here](https://github.com/JohnLZeller/fxosu-midterm/blob/master/demo.html).
 
 ## Changes I've Made
 
 I have added the following files:
-* dom/fxosuprototype/[FxOSUPrototypeService.js](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosuprototype/FxOSUPrototypeService.js)
-* dom/fxosuprototype/[FxOSUPrototypeService.manifest](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosuprototype/FxOSUPrototypeService.manifest)
-* dom/fxosuprototype/[moz.build](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosuprototype/moz.build)
-* dom/webidl/[FxOSUPrototypeService.webidl](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/webidl/FxOSUPrototypeService.webidl)
+* dom/fxosu/[FxOSUService.js](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosu/FxOSUService.js)
+* dom/fxosu/[FxOSUService.manifest](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosu/FxOSUService.manifest)
+* dom/fxosu/[moz.build](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosu/moz.build)
+* dom/webidl/[FxOSUService.webidl](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/webidl/FxOSUService.webidl)
 
 And I have modified these files:
 * b2g/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-midterm/blob/master/b2g/installer/package-manifest.in#L366-L367) (Lines 366 to 376)
