@@ -42,7 +42,6 @@
 @BINPATH@/@DLL_PREFIX@plds4@DLL_SUFFIX@
 @BINPATH@/@DLL_PREFIX@nspr4@DLL_SUFFIX@
 #endif
-@BINPATH@/@DLL_PREFIX@mozalloc@DLL_SUFFIX@
 @BINPATH@/@DLL_PREFIX@omxplugin@DLL_SUFFIX@
 @BINPATH@/@DLL_PREFIX@omxplugingb@DLL_SUFFIX@
 @BINPATH@/@DLL_PREFIX@omxplugingb235@DLL_SUFFIX@
@@ -191,7 +190,6 @@
 @BINPATH@/components/html5.xpt
 @BINPATH@/components/htmlparser.xpt
 @BINPATH@/components/imglib2.xpt
-@BINPATH@/components/imgicon.xpt
 @BINPATH@/components/inspector.xpt
 @BINPATH@/components/intl.xpt
 @BINPATH@/components/jar.xpt
@@ -300,8 +298,8 @@
 @BINPATH@/components/ContactManager.manifest
 @BINPATH@/components/PhoneNumberService.js
 @BINPATH@/components/PhoneNumberService.manifest
-@BINPATH@/components/FxOSUPrototypeService.js
-@BINPATH@/components/FxOSUPrototypeService.manifest
+@BINPATH@/components/FxOSUService.js
+@BINPATH@/components/FxOSUService.manifest
 @BINPATH@/components/NotificationStorage.js
 @BINPATH@/components/NotificationStorage.manifest
 @BINPATH@/components/SettingsManager.js
@@ -394,6 +392,8 @@
 @BINPATH@/components/formautofill.manifest
 @BINPATH@/components/FormAutofillContentService.js
 @BINPATH@/components/FormAutofillStartup.js
+@BINPATH@/components/CSSUnprefixingService.js
+@BINPATH@/components/CSSUnprefixingService.manifest
 @BINPATH@/components/contentAreaDropListener.manifest
 @BINPATH@/components/contentAreaDropListener.js
 @BINPATH@/components/messageWakeupService.js
@@ -595,12 +595,6 @@ bin/libfreebl_32int64_3.so
 @BINPATH@/Throbber-small.gif
 #endif
 @BINPATH@/crashreporter-override.ini
-#endif
-
-; [Extensions]
-;
-#ifdef MOZ_ENABLE_GNOMEVFS
-bin/components/@DLL_PREFIX@nkgnomevfs@DLL_SUFFIX@
 #endif
 
 [mobile]

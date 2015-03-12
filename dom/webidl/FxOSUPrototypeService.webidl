@@ -4,9 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-[JSImplementation="@mozilla.org/fxosuPrototypeService;1",
- NavigatorProperty="mozFxOSUPrototypeService"]
-interface FxOSUPrototypeService {
+[JSImplementation="@mozilla.org/FxOSUService;1",
+ NavigatorProperty="mozFxOSUService"]
+interface FxOSUService {
   DOMString batteryLevel();
   DOMString batteryCharging();
   DOMString recentRxTx();

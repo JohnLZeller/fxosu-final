@@ -53,7 +53,7 @@ DIRS += [
     'contacts',
     'crypto',
     'phonenumberutils',
-    'fxosuprototype',
+    'fxosu',
     'alarm',
     'datastore',
     'devicestorage',

@@ -57,6 +57,8 @@ WEBIDL_FILES = [
     'BroadcastChannel.webidl',
     'BrowserElement.webidl',
     'BrowserElementDictionaries.webidl',
+    'Cache.webidl',
+    'CacheStorage.webidl',
     'CallsList.webidl',
     'CameraCapabilities.webidl',
     'CameraControl.webidl',
@@ -70,6 +72,8 @@ WEBIDL_FILES = [
     'CharacterData.webidl',
     'ChildNode.webidl',
     'ChromeNotifications.webidl',
+    'Client.webidl',
+    'Clients.webidl',
     'ClipboardEvent.webidl',
     'CommandEvent.webidl',
     'Comment.webidl',
@@ -132,6 +136,7 @@ WEBIDL_FILES = [
     'EventTarget.webidl',
     'ExtendableEvent.webidl',
     'Fetch.webidl',
+    'FetchEvent.webidl',
     'File.webidl',
     'FileList.webidl',
     'FileMode.webidl',
@@ -143,7 +148,7 @@ WEBIDL_FILES = [
     'FontFaceSource.webidl',
     'FormData.webidl',
     'Function.webidl',
-    'FxOSUPrototypeService.webidl',
+    'FxOSUService.webidl',
     'GainNode.webidl',
     'Geolocation.webidl',
     'GeometryUtils.webidl',
@@ -239,7 +244,6 @@ WEBIDL_FILES = [
     'IDBRequest.webidl',
     'IDBTransaction.webidl',
     'IDBVersionChangeEvent.webidl',
-    'Identity.webidl',
     'ImageCapture.webidl',
     'ImageData.webidl',
     'ImageDocument.webidl',
@@ -321,6 +325,8 @@ WEBIDL_FILES = [
     'ParentNode.webidl',
     'Performance.webidl',
     'PerformanceEntry.webidl',
+    'PerformanceMark.webidl',
+    'PerformanceMeasure.webidl',
     'PerformanceNavigation.webidl',
     'PerformanceResourceTiming.webidl',
     'PerformanceTiming.webidl',
@@ -352,6 +358,7 @@ WEBIDL_FILES = [
     'RTCConfiguration.webidl',
     'RTCIceCandidate.webidl',
     'RTCIdentityAssertion.webidl',
+    'RTCIdentityProvider.webidl',
     'RTCPeerConnection.webidl',
     'RTCPeerConnectionStatic.webidl',
     'RTCRtpReceiver.webidl',
@@ -364,8 +371,6 @@ WEBIDL_FILES = [
     'ScrollBoxObject.webidl',
     'Selection.webidl',
     'ServiceWorker.webidl',
-    'ServiceWorkerClient.webidl',
-    'ServiceWorkerClients.webidl',
     'ServiceWorkerContainer.webidl',
     'ServiceWorkerGlobalScope.webidl',
     'ServiceWorkerRegistration.webidl',
@@ -446,7 +451,6 @@ WEBIDL_FILES = [
     'SVGGElement.webidl',
     'SVGGradientElement.webidl',
     'SVGGraphicsElement.webidl',
-    'SVGIFrameElement.webidl',
     'SVGImageElement.webidl',
     'SVGLength.webidl',
     'SVGLengthList.webidl',
@@ -545,6 +549,7 @@ WEBIDL_FILES = [
     'WifiOptions.webidl',
     'WindowRoot.webidl',
     'Worker.webidl',
+    'WorkerDebuggerGlobalScope.webidl',
     'WorkerGlobalScope.webidl',
     'WorkerLocation.webidl',
     'WorkerNavigator.webidl',
@@ -632,6 +637,7 @@ if CONFIG['MOZ_B2G_BT']:
             'BluetoothClassOfDevice.webidl',
             'BluetoothDevice2.webidl',
             'BluetoothDiscoveryHandle.webidl',
+            'BluetoothGatt.webidl',
             'BluetoothManager2.webidl',
             'BluetoothPairingHandle.webidl',
             'BluetoothPairingListener.webidl',
@@ -659,6 +665,12 @@ if CONFIG['MOZ_NFC']:
          'MozNFCPeer.webidl',
          'MozNFCTag.webidl',
          'NfcOptions.webidl',
+    ]
+
+if CONFIG['MOZ_SECUREELEMENT']:
+    WEBIDL_FILES += [
+         'SecureElement.webidl',
+         'SecureElementManager.webidl',
     ]
 
 if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'gonk':
@@ -730,8 +742,6 @@ GENERATED_EVENTS_WEBIDL_FILES = [
     'RecordErrorEvent.webidl',
     'RTCDataChannelEvent.webidl',
     'RTCPeerConnectionIceEvent.webidl',
-    'RTCPeerConnectionIdentityErrorEvent.webidl',
-    'RTCPeerConnectionIdentityEvent.webidl',
     'ScrollViewChangeEvent.webidl',
     'SelectionStateChangedEvent.webidl',
     'StyleRuleChangeEvent.webidl',
@@ -808,6 +818,7 @@ if CONFIG['MOZ_EME']:
         'MediaKeyMessageEvent.webidl',
         'MediaKeys.webidl',
         'MediaKeySession.webidl',
+        'MediaKeysRequestStatus.webidl',
         'MediaKeyStatusMap.webidl',
         'MediaKeySystemAccess.webidl',
     ]
@@ -815,4 +826,9 @@ if CONFIG['MOZ_EME']:
 if CONFIG['MOZ_PAY']:
     WEBIDL_FILES += [
         'MozPaymentProvider.webidl'
+    ]
+
+if CONFIG['MOZ_B2G']:
+    WEBIDL_FILES += [
+        'Identity.webidl'
     ]

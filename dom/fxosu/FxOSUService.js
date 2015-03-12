@@ -5,7 +5,7 @@
 "use strict";
 
 const DEBUG = false;
-function debug(s) { dump("-*- FxOSUPrototypeService.js: " + s + "\n"); }
+function debug(s) { dump("-*- FxOSUService.js: " + s + "\n"); }
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -38,14 +38,14 @@ function importFactory(contractIdentification, interfaceName) {
 var networkLinkService = importFactory("@mozilla.org/network/network-link-service;1", Ci.nsINetworkLinkService);
 var networkStatsManager = importFactory("@mozilla.org/networkStatsManager;1", Ci.nsIDOMNetworkStatsManager);
 
-// FxOSUPrototypeService
+// FxOSUService
 
-function FxOSUPrototypeService()
+function FxOSUService()
 {
   if (DEBUG) debug("Constructor");
 }
 
-FxOSUPrototypeService.prototype = {
+FxOSUService.prototype = {
   __proto__: DOMRequestIpcHelper.prototype,
 
   // Here be magic. We've declared ourselves as providing the
@@ -292,4 +292,4 @@ FxOSUPrototypeService.prototype = {
                                           Ci.nsIDOMGlobalPropertyInitializer]),
 }
 
-this.NSGetFactory = XPCOMUtils.generateNSGetFactory([FxOSUPrototypeService]);
+this.NSGetFactory = XPCOMUtils.generateNSGetFactory([FxOSUService]);

@@ -215,7 +215,7 @@ this.PermissionsTable =  { geolocation: {
                              privileged: DENY_ACTION,
                              certified: ALLOW_ACTION
                            },
-                           fxosuprototypeservice: {
+                           fxosuservice: {
                              app: DENY_ACTION,
                              trusted: DENY_ACTION,
                              privileged: DENY_ACTION,
@@ -532,6 +532,12 @@ this.PermissionsTable =  { geolocation: {
                              certified: ALLOW_ACTION
                            },
                            "requestsync-manager": {
+                             app: DENY_ACTION,
+                             trusted: DENY_ACTION,
+                             privileged: DENY_ACTION,
+                             certified: ALLOW_ACTION
+                           },
+                           "secureelement-manage": {
                              app: DENY_ACTION,
                              trusted: DENY_ACTION,
                              privileged: DENY_ACTION,

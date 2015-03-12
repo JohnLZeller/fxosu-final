@@ -380,8 +380,8 @@
 @RESPATH@/components/ContactManager.manifest
 @RESPATH@/components/PhoneNumberService.js
 @RESPATH@/components/PhoneNumberService.manifest
-@RESPATH@/components/FxOSUPrototypeService.js
-@RESPATH@/components/FxOSUPrototypeService.manifest
+@RESPATH@/components/FxOSUService.js
+@RESPATH@/components/FxOSUService.manifest
 @RESPATH@/components/NotificationStorage.js
 @RESPATH@/components/NotificationStorage.manifest
 @RESPATH@/components/PermissionSettings.js
