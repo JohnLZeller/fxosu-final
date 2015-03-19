@@ -4,7 +4,7 @@
 
 "use strict";
 
-const DEBUG = false;
+const DEBUG = true;
 function debug(s) { dump("-*- FxOSUService.js: " + s + "\n"); }
 
 const Cc = Components.classes;
@@ -16,11 +16,10 @@ var lastMemEventExplicit = 0;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
 Cu.import("resource://gre/modules/DOMRequestHelper.jsm");
-//Cu.import("resource://gre/modules/Battery.jsm"); // Fails on Desktop
 
 XPCOMUtils.defineLazyServiceGetter(this, "cpmm",
                                    "@mozilla.org/childprocessmessagemanager;1",
-                                   "nsIMessageSender");
+                                   "nsISyncMessageSender");
 
 // Component interface import factory
 function importFactory(contractIdentification, interfaceName) {
@@ -38,31 +37,67 @@ function importFactory(contractIdentification, interfaceName) {
 
 // Import components
 var networkLinkService = importFactory("@mozilla.org/network/network-link-service;1", Ci.nsINetworkLinkService);
-var networkStatsManager = importFactory("@mozilla.org/networkStatsManager;1", Ci.nsIDOMNetworkStatsManager);
 var memoryReportManager = importFactory("@mozilla.org/memory-reporter-manager;1", Ci.nsIMemoryReporterManager);
+var consoleService = importFactory("@mozilla.org/consoleservice;1", Ci.nsIConsoleService);
 
-// FxOSUService
+const FXOSUSERVICE_CID = "{9c72ce25-06d6-4fb8-ae9c-431652fce848}";
+const FXOSUSERVICE_CONTRACTID = "@mozilla.org/fxosuService;1";
+const nsIDOMMozNetworkStatsManager = Ci.nsIDOMMozNetworkStatsManager;
 
 function FxOSUService()
 {
-  if (DEBUG) debug("Constructor");
+  if (DEBUG) {
+    debug("FxOSUService Constructor");
+  }
 }
 
 FxOSUService.prototype = {
   __proto__: DOMRequestIpcHelper.prototype,
 
-  // Here be magic. We've declared ourselves as providing the
-  // nsIDOMGlobalPropertyInitializer interface, and are registered in the
-  // "JavaScript-global-property" category in the XPCOM category manager. This
-  // means that for newly created windows, XPCOM will createinstance this
-  // object, and then call init, passing in the window for which we need to
-  // provide an instance. We then initialize ourselves and return the webidl
-  // version of this object using the webidl-provided _create method, which
-  // XPCOM will then duly expose as a property value on the window. All this
-  // indirection is necessary because webidl does not (yet) support statics
-  // (bug 863952). See bug 926712 for more details about this implementation.
-  init: function(window) {
-    this._window = window;
+  debug: function(s) { this.window.console.log("-*- FxOSUService.js: " + s + "\n"); },
+
+  init: function(aWindow) {
+    this.window = aWindow;
+
+    // Set navigator.mozNetworkStats to null.
+    if (!Services.prefs.getBoolPref("dom.mozNetworkStats.enabled")) {
+      return null;
+    }
+
+    let principal = aWindow.document.nodePrincipal;
+    let secMan = Services.scriptSecurityManager;
+    let perm = principal == secMan.getSystemPrincipal() ?
+                 Ci.nsIPermissionManager.ALLOW_ACTION :
+                 Services.perms.testExactPermissionFromPrincipal(principal,
+                                                                 "networkstats-manage");
+
+    // Only pages with perm set can use the netstats.
+    this.hasPrivileges = perm == Ci.nsIPermissionManager.ALLOW_ACTION;
+    if (DEBUG) {
+      this.debug("has privileges: " + this.hasPrivileges);
+    }
+
+    if (!this.hasPrivileges) {
+      // Set privileges
+      // TODO: This okay?
+      Services.perm.addFromPrincipal(principal, "networkstats-manage",
+                                    Ci.nsIPermissionManager.ALLOW_ACTION)
+    }
+
+    this.initDOMRequestHelper(aWindow, ["NetworkStats:Get:Return"]);
+
+    // Init app properties.
+    let appsService = Cc["@mozilla.org/AppsService;1"]
+                        .getService(Ci.nsIAppsService);
+
+    this.manifestURL = appsService.getManifestURLByLocalId(principal.appId);
+
+    let isApp = !!this.manifestURL.length;
+    if (isApp) {
+      this.pageURL = principal.URI.spec;
+    }
+
+    // Setup Memory Observers
     Services.obs.addObserver(this, "xpcom-shutdown", false);
     Services.obs.addObserver(this, "memory-pressure", false);
   },
@@ -72,55 +107,49 @@ FxOSUService.prototype = {
   //PRIVATE
   observe: function mem_obs(aSubject, aTopic, aData) 
   {
-      if(aTopic == "xpcom-shutdown"){
-        Services.obs.removeObserver(this, "xpcom-shutdown", false);
-        Services.obs.removeObserver(this, "memory-pressure", false);
-      }
-      else if(aTopic == "memory-pressure"){
-        var usage = this.memoryManager();
-        var explicit = " Explicit: " + usage[0].toString();
-        var resident = " Resident: " + usage[1].toString();
-        lastMemEventExplicit = usage[0];
-        lastMemEventRes = usage[1];
-        this._window.console.log("Memory Pressure Event Happened! " + aData + explicit + resident);
-      }
+    if(aTopic == "xpcom-shutdown"){
+      Services.obs.removeObserver(this, "xpcom-shutdown", false);
+      Services.obs.removeObserver(this, "memory-pressure", false);
+    }
+    else if(aTopic == "memory-pressure"){
+      var usage = this.memoryManager();
+      var explicit = " Explicit: " + usage[0].toString();
+      var resident = " Resident: " + usage[1].toString();
+      lastMemEventExplicit = usage[0];
+      lastMemEventRes = usage[1];
+      this.window.console.log("Memory Pressure Event Happened! " + aData + explicit + resident);
+    }
   },  
 
-  //Callable function which displays the current memory usage.  Is automatically called when a low-memory event occurs 
+  //Callable function which displays the current memory usage. Is automatically called when a low-memory event occurs 
   memoryManager: function() {
-      this._window.console.log("Resident: " + lastMemEventRes + " Explicit: " + lastMemEventExplicit);
-      return [memoryReportManager.explicit, 
-              memoryReportManager.resident];
+    this.window.console.log("Resident: " + lastMemEventRes + " Explicit: " + lastMemEventExplicit);
+    return [memoryReportManager.explicit, memoryReportManager.resident];
   },
 
-    memoryManager: function() {
-      this._window.console.log("Resident: " + lastMemEventRes + " Explicit: " + lastMemEventExplicit);
-      return [memoryReportManager.explicit, 
-              memoryReportManager.resident];
-  },
-
-  // Logic of XPCOM compontent
   batteryLevel: function() { // This will be false when device is 100%, more than likely
-    return this._window.navigator.battery.level;
+    return this.window.navigator.battery.level;
   },
 
   batteryCharging: function() {
-    return this._window.navigator.battery.charging;
+    return this.window.navigator.battery.charging;
   },
-
+ 
   recentRxTx: function() {
-    if (networkStatsManager) {
-      return false; // Treat this as functionality is not present
-    } else {
-      return true; // Do something useful
-    }
-  },
+    var wifi = {'type': 0, 'id': '0'};
+    let network = new this.window.MozNetworkStatsInterface(wifi);
+    let end = new Date();
+    let oneHour = 3600000; //in milliseconds
+    let start = new Date(end.getTime() - oneHour);
 
+    return this.window.navigator.mozNetworkStats.getSamples(network, start, end);
+  },
+ 
   latencyInfo: function() {
-      var t = this._window.performance.timing;
+      var t = this.window.performance.timing;
       var timeInfo = {};
-      timeInfo.navigation_type = this._window.performance.navigation.type;
-      timeInfo.navigation_redirectCount = this._window.performance.navigation.redirectCount;
+      timeInfo.navigation_type = this.window.performance.navigation.type;
+      timeInfo.navigation_redirectCount = this.window.performance.navigation.redirectCount;
       timeInfo.prep = t.redirectStart - t.navigationStart;
       timeInfo.redirect = t.redirectEnd - t.redirectStart;
       timeInfo.unload = t.unloadEventEnd - t.unloadEventStart;
@@ -234,15 +263,15 @@ FxOSUService.prototype = {
       return false;
     }
     if(mustCharge && !batCha){
-      this._window.console.log("PLUG IN YOUR DEVICE YOU MUTANT");
-      this._window.alert("PLUG IN YOUR DEVICE YOU MUTANT, GIFF POWER");
+      this.window.console.log("PLUG IN YOUR DEVICE YOU MUTANT");
+      this.window.alert("PLUG IN YOUR DEVICE YOU MUTANT, GIFF POWER");
       return false;
     }
 
     // Certainty level differences
     switch(parseInt(level)) {
       case 1:
-        this._window.console.log("Level parsed as 1");
+        this.window.console.log("Level parsed as 1");
         // if battery is > 90%, go
         // elif battery is >70% and < 90%, but is charging, go
         // else, nogo
@@ -270,7 +299,7 @@ FxOSUService.prototype = {
         }
         break;
       case 2:
-        this._window.console.log("Level parsed as 2");
+        this.window.console.log("Level parsed as 2");
         // if battery is > 60%, go
         // elif battery is >30% and < 60%, but is charging, go
         // else, nogo
@@ -298,7 +327,7 @@ FxOSUService.prototype = {
         }
         break;
       case 3:
-        this._window.console.log("Level parsed as 3");
+        this.window.console.log("Level parsed as 3");
         // if battery is >30%, go
         // elif battery is >10% and < 30%, but is charging, go
         // else, nogo
@@ -329,12 +358,13 @@ FxOSUService.prototype = {
         return true; // so we don't block
     }
   },
-
+ 
   classID : Components.ID("{9c72ce25-06d6-4fb8-ae9c-431652fce848}"),
-  contractID : "@mozilla.org/fxosuPrototypeService;1",
+  contractID : "@mozilla.org/fxosuService;1",
   QueryInterface : XPCOMUtils.generateQI([Ci.nsISupports,
                                           Ci.nsIObserver,
-                                          Ci.nsIDOMGlobalPropertyInitializer]),
+                                          Ci.nsIDOMGlobalPropertyInitializer,
+                                          Ci.nsISupportsWeakReference]),
 }
 
 this.NSGetFactory = XPCOMUtils.generateNSGetFactory([FxOSUService]);
