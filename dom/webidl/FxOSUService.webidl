@@ -12,8 +12,9 @@ interface FxOSUService {
   DOMString recentRxTx();
   DOMString latencyInfo();
   DOMString showLatencyInfo();
+  DOMString memoryManager(); 
   DOMString connectionType();
   DOMString connectionUp();
   DOMString connectionQuality();
-  DOMString mozIsNowGood();
+  DOMString mozIsNowGood(optional DOMString level = "2", optional boolean mustCharge = false);
 };
