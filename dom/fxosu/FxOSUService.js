@@ -10,6 +10,8 @@ function debug(s) { dump("-*- FxOSUService.js: " + s + "\n"); }
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 const Cu = Components.utils;
+var lastMemEventRes = 0;
+var lastMemEventExplicit = 0;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
@@ -37,6 +39,7 @@ function importFactory(contractIdentification, interfaceName) {
 // Import components
 var networkLinkService = importFactory("@mozilla.org/network/network-link-service;1", Ci.nsINetworkLinkService);
 var networkStatsManager = importFactory("@mozilla.org/networkStatsManager;1", Ci.nsIDOMNetworkStatsManager);
+var memoryReportManager = importFactory("@mozilla.org/memory-reporter-manager;1", Ci.nsIMemoryReporterManager);
 
 // FxOSUService
 
@@ -60,6 +63,40 @@ FxOSUService.prototype = {
   // (bug 863952). See bug 926712 for more details about this implementation.
   init: function(window) {
     this._window = window;
+    Services.obs.addObserver(this, "xpcom-shutdown", false);
+    Services.obs.addObserver(this, "memory-pressure", false);
+  },
+
+  //private function which is called when low either of the above observers is notified
+  //In our case it either removes the observers on shutdown or records a memory-pressure event
+  //PRIVATE
+  observe: function mem_obs(aSubject, aTopic, aData) 
+  {
+      if(aTopic == "xpcom-shutdown"){
+        Services.obs.removeObserver(this, "xpcom-shutdown", false);
+        Services.obs.removeObserver(this, "memory-pressure", false);
+      }
+      else if(aTopic == "memory-pressure"){
+        var usage = this.memoryManager();
+        var explicit = " Explicit: " + usage[0].toString();
+        var resident = " Resident: " + usage[1].toString();
+        lastMemEventExplicit = usage[0];
+        lastMemEventRes = usage[1];
+        this._window.console.log("Memory Pressure Event Happened! " + aData + explicit + resident);
+      }
+  },  
+
+  //Callable function which displays the current memory usage.  Is automatically called when a low-memory event occurs 
+  memoryManager: function() {
+      this._window.console.log("Resident: " + lastMemEventRes + " Explicit: " + lastMemEventExplicit);
+      return [memoryReportManager.explicit, 
+              memoryReportManager.resident];
+  },
+
+    memoryManager: function() {
+      this._window.console.log("Resident: " + lastMemEventRes + " Explicit: " + lastMemEventExplicit);
+      return [memoryReportManager.explicit, 
+              memoryReportManager.resident];
   },
 
   // Logic of XPCOM compontent
@@ -180,7 +217,7 @@ FxOSUService.prototype = {
     }
   },
 
-  mozIsNowGood: function(level) {
+  mozIsNowGood: function(level, mustCharge) {
     level = typeof level !== 'undefined' ? level : 2;
     // Levels of certainty
       // 1 - High
@@ -196,10 +233,16 @@ FxOSUService.prototype = {
     if (!conUp) {
       return false;
     }
+    if(mustCharge && !batCha){
+      this._window.console.log("PLUG IN YOUR DEVICE YOU MUTANT");
+      this._window.alert("PLUG IN YOUR DEVICE YOU MUTANT, GIFF POWER");
+      return false;
+    }
 
     // Certainty level differences
-    switch(level) {
+    switch(parseInt(level)) {
       case 1:
+        this._window.console.log("Level parsed as 1");
         // if battery is > 90%, go
         // elif battery is >70% and < 90%, but is charging, go
         // else, nogo
@@ -227,6 +270,7 @@ FxOSUService.prototype = {
         }
         break;
       case 2:
+        this._window.console.log("Level parsed as 2");
         // if battery is > 60%, go
         // elif battery is >30% and < 60%, but is charging, go
         // else, nogo
@@ -254,6 +298,7 @@ FxOSUService.prototype = {
         }
         break;
       case 3:
+        this._window.console.log("Level parsed as 3");
         // if battery is >30%, go
         // elif battery is >10% and < 30%, but is charging, go
         // else, nogo
