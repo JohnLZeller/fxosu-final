@@ -4,7 +4,7 @@
 
 I used [PhoneNumberService.js](http://mxr.mozilla.org/mozilla-central/source/dom/phonenumberutils/PhoneNumberService.js) and [PhoneNumberService.manifest](http://mxr.mozilla.org/mozilla-central/source/dom/phonenumberutils/PhoneNumberService.manifest) as a base. I then rewrote all of the PhoneNumberService stuff into my own name, FxOSUService.
 
-Here is the [diff of mozilla-central with my changes](https://github.com/JohnLZeller/fxosu-midterm/blob/master/prototype.diff) to [mozilla-central](http://hg.mozilla.org/mozilla-central/).
+Here is the [diff of mozilla-central with my changes](https://github.com/JohnLZeller/fxosu-final/blob/master/prototype.diff) to [mozilla-central](http://hg.mozilla.org/mozilla-central/).
 
 It is currently working for the following platforms:
 * Firefox Desktop
@@ -29,23 +29,23 @@ Once you've built and launched your new Firefox, you can open the console and ge
 * navigator.mozFxOSUService.connectionQuality();
 * navigator.mozFxOSUService.mozIsNowGood();
 
-Additionally, there is a simple demo html page [here](https://github.com/JohnLZeller/fxosu-midterm/blob/master/demo.html).
+Additionally, there is a simple demo html page [here](https://github.com/JohnLZeller/fxosu-final/blob/master/demo.html).
 
 ## Changes I've Made
 
 I have added the following files:
-* dom/fxosu/[FxOSUService.js](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosu/FxOSUService.js)
-* dom/fxosu/[FxOSUService.manifest](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosu/FxOSUService.manifest)
-* dom/fxosu/[moz.build](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/fxosu/moz.build)
-* dom/webidl/[FxOSUService.webidl](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/webidl/FxOSUService.webidl)
+* dom/fxosu/[FxOSUService.js](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/fxosu/FxOSUService.js)
+* dom/fxosu/[FxOSUService.manifest](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/fxosu/FxOSUService.manifest)
+* dom/fxosu/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/fxosu/moz.build)
+* dom/webidl/[FxOSUService.webidl](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/webidl/FxOSUService.webidl)
 
 And I have modified these files:
-* b2g/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-midterm/blob/master/b2g/installer/package-manifest.in#L366-L367) (Lines 366 to 376)
-* browser/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-midterm/blob/master/browser/installer/package-manifest.in#L561-L562) (Lines 561 to 562)
-* mobile/android/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-midterm/blob/master/mobile/android/installer/package-manifest.in#L303-L304) (Lines 303 to 304)
-* dom/apps/[PermissionsTable.jsm](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/apps/PermissionsTable.jsm#L218-L223) (Lines 218 to 223)
-* dom/webidl/[moz.build](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/webidl/moz.build#L146) (Line 146)
-* dom/[moz.build](https://github.com/JohnLZeller/fxosu-midterm/blob/master/dom/moz.build#L55) (Line 55)
+* b2g/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/b2g/installer/package-manifest.in#L366-L367) (Lines 366 to 376)
+* browser/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/browser/installer/package-manifest.in#L561-L562) (Lines 561 to 562)
+* mobile/android/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/mobile/android/installer/package-manifest.in#L303-L304) (Lines 303 to 304)
+* dom/apps/[PermissionsTable.jsm](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/apps/PermissionsTable.jsm#L218-L223) (Lines 218 to 223)
+* dom/webidl/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/webidl/moz.build#L146) (Line 146)
+* dom/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/moz.build#L55) (Line 55)
 
 ## Requirements
 ### Week 10 (March 9th to 13th)
