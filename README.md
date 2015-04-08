@@ -40,12 +40,12 @@ I have added the following files:
 * dom/webidl/[FxOSUService.webidl](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/webidl/FxOSUService.webidl)
 
 And I have modified these files:
-* b2g/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/b2g/installer/package-manifest.in#L366-L367) (Lines 366 to 376)
-* browser/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/browser/installer/package-manifest.in#L561-L562) (Lines 561 to 562)
-* mobile/android/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/mobile/android/installer/package-manifest.in#L303-L304) (Lines 303 to 304)
+* b2g/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/b2g/installer/package-manifest.in#L383-L384) (Lines 383 to 384)
+* browser/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/browser/installer/package-manifest.in#L552-L553) (Lines 552 to 553)
+* mobile/android/installer/[package-manifest.in](https://github.com/JohnLZeller/fxosu-final/blob/master/mobile/android/installer/package-manifest.in#L301-L302) (Lines 301 to 302)
 * dom/apps/[PermissionsTable.jsm](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/apps/PermissionsTable.jsm#L218-L223) (Lines 218 to 223)
-* dom/webidl/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/webidl/moz.build#L146) (Line 146)
-* dom/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/moz.build#L55) (Line 55)
+* dom/webidl/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/webidl/moz.build#L151) (Line 151)
+* dom/[moz.build](https://github.com/JohnLZeller/fxosu-final/blob/master/dom/moz.build#L56) (Line 56)
 
 ## Requirements
 ### Week 10 (March 9th to 13th)
