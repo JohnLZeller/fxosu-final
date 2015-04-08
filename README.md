@@ -50,11 +50,11 @@ And I have modified these files:
 ## Requirements
 ### Week 10 (March 9th to 13th)
 1. :heavy_check_mark: The API should be written in C++ or JavaScript.
-2. :x: The API should integrate with existing efforts wherever possible.
+2. :heavy_check_mark: The API should integrate with existing efforts wherever possible.
 3. :heavy_check_mark: The API should be developer configurable, to provide a level of certainty about network quality
 4. :heavy_check_mark: Write a Web IDL specification for the API implementation.
-5. :x: The API should take into account the type of network connection, whether it be wifi, cellular data, etc
+5. :heavy_check_mark: The API should take into account the type of network connection, whether it be wifi, cellular data, etc
 6. :heavy_check_mark: The API should be able to access data about system load on the device in order to determine if the device can handle another task.
 7. :heavy_check_mark: The API should be able to access data on the battery level of the device in order to determine if a task should be executed.
-8. :x: The API should be able to access data about recent tx/rx data
+8. :heavy_check_mark: The API should be able to access data about recent tx/rx data
 9. :heavy_check_mark: The API should be able to access latency-related network information to determine if a task should be executed.
